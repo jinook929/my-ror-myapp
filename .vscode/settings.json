@@ -1,0 +1,19 @@
+{
+  "editor.formatOnSave": true,
+  "[ruby]": {
+    "editor.defaultFormatter": "rubocop.vscode-rubocop"
+  },
+  "[erb]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "aliariff.vscode-erb-beautify"
+  },
+  "files.associations": {
+    "*.html.erb": "erb"
+  },
+  "emmet.includeLanguages": {
+    "erb": "html"
+  },
+  "vscode-erb-beautify.customEnvVar": {
+    "LC_ALL": "en_US.UTF-8"
+  }
+}
