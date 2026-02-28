@@ -1,0 +1,11 @@
+<h1 class="text-3xl font-bold mb-6">Posts List</h1>
+
+<div class="max-w-lg space-y-3">
+  <% @posts.each do |post| %>
+    <%= link_to post, class: "block border border-gray-300 rounded px-4 py-3 hover:bg-gray-50" do %>
+      <p class="text-lg font-medium"><%= post.title %></p>
+    <% end %>
+  <% end %>
+</div>
+
+<%= link_to "Add New Post", new_post_path, class: "max-w-lg md:w-fit bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 mt-6" %>
