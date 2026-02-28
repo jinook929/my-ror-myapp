@@ -1,7 +1,7 @@
 module Api
   module V1
     class PostsController < BaseController
-      before_action :set_post, only: [:show, :update, :destroy]
+      before_action :set_post, only: [ :show, :update, :destroy ]
 
       def index
         @posts = Post.all.order(created_at: :desc)
@@ -41,7 +41,7 @@ module Api
       end
 
       def post_params
-        params.expect(post: [:title, :content])
+        params.expect(post: [ :title, :content ])
       end
     end
   end
