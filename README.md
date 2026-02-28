@@ -1,6 +1,6 @@
 # MyApp
 
-A full-stack blog application with a **Rails 8 API backend** and a **React (Vite) frontend**.
+A full-stack blog application with a **Rails 8 API backend** (REST + GraphQL) and a **React (Vite) frontend**.
 
 ## Tech Stack
 
@@ -9,6 +9,7 @@ A full-stack blog application with a **Rails 8 API backend** and a **React (Vite
 - Rails 8.1
 - SQLite3
 - Puma
+- GraphQL (graphql-ruby)
 - Tailwind CSS (for server-rendered views)
 
 ### Frontend
@@ -24,17 +25,28 @@ myapp/
 ├── app/                      # Rails application
 │   ├── controllers/
 │   │   ├── posts_controller.rb          # HTML views (server-rendered)
-│   │   └── api/v1/posts_controller.rb   # JSON API for React frontend
+│   │   ├── api/v1/posts_controller.rb   # REST API for React frontend
+│   │   └── graphql_controller.rb        # GraphQL endpoint
+│   ├── graphql/
+│   │   ├── types/post_type.rb           # Post GraphQL type
+│   │   ├── types/query_type.rb          # Queries (posts, post)
+│   │   └── mutations/                   # Create, Update, Delete mutations
 │   ├── models/
 │   └── views/
 ├── frontend/                 # React SPA (Vite)
 │   └── src/
 │       ├── App.jsx
-│       ├── api/posts.js
+│       ├── api/
+│       │   ├── posts.js                 # REST API client
+│       │   └── graphql.js               # GraphQL API client (fetch)
 │       └── components/
-│           ├── PostList.jsx
+│           ├── PostList.jsx             # REST components
 │           ├── PostShow.jsx
-│           └── PostForm.jsx
+│           ├── PostForm.jsx
+│           └── graphql/                 # GraphQL components
+│               ├── GqlPostList.jsx
+│               ├── GqlPostShow.jsx
+│               └── GqlPostForm.jsx
 ├── config/
 │   ├── routes.rb
 │   └── initializers/cors.rb
@@ -74,9 +86,11 @@ This runs via `Procfile.dev`:
 - **Rails** → `http://localhost:3000`
 - **Vite (React)** → `http://localhost:5173`
 
-The Vite dev server proxies `/api` requests to the Rails server.
+The Vite dev server proxies `/api` and `/graphql` requests to the Rails server.
 
 ## API Endpoints
+
+### REST
 
 | Method | Path | Description |
 |--------|------|-------------|
@@ -86,7 +100,24 @@ The Vite dev server proxies `/api` requests to the Rails server.
 | PATCH | `/api/v1/posts/:id` | Update a post |
 | DELETE | `/api/v1/posts/:id` | Delete a post |
 
+### GraphQL
+
+Single endpoint: `POST /graphql`
+
+**Queries:**
+- `posts` — List all posts
+- `post(id:)` — Get a single post
+
+**Mutations:**
+- `createPost(input: { title, content })` — Create a post
+- `updatePost(input: { id, title, content })` — Update a post
+- `deletePost(input: { id })` — Delete a post
+
+GraphiQL IDE is available at `http://localhost:3000/graphiql` in development.
+
 ## Frontend Routes
+
+### REST
 
 | Path | Component | Description |
 |------|-----------|-------------|
@@ -94,6 +125,15 @@ The Vite dev server proxies `/api` requests to the Rails server.
 | `/posts/new` | PostForm | Create a new post |
 | `/posts/:id` | PostShow | View a post |
 | `/posts/:id/edit` | PostForm | Edit a post |
+
+### GraphQL
+
+| Path | Component | Description |
+|------|-----------|-------------|
+| `/graphql/posts` | GqlPostList | List all posts |
+| `/graphql/posts/new` | GqlPostForm | Create a new post |
+| `/graphql/posts/:id` | GqlPostShow | View a post |
+| `/graphql/posts/:id/edit` | GqlPostForm | Edit a post |
 
 ## Server-Rendered Routes
 
