@@ -5,6 +5,14 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
+  # API endpoints for React frontend
+  namespace :api do
+    namespace :v1 do
+      resources :posts
+    end
+  end
+
+  # HTML routes (existing)
   resources :posts
   # get "/posts", to: "posts#index"
   # get "/posts/new", to: "posts#new"
